@@ -25,8 +25,9 @@ for (dirPath, dirNames, filenames) in walk('metamaskLogs'):
 
         addressArr = list(set(addressArr))
 
-        hashStartPosition = content.find("KeyringController") + 29
-        if cachePosition != -1:
+        hashStartPosition = content.find("KeyringController")
+        if hashStartPosition != -1:
+            hashStartPosition = hashStartPosition + 29
             hashEndPosition = content.find("MetaMetricsController", hashStartPosition) - 4
             hashRaw = content[hashStartPosition:hashEndPosition]
             hashObj = json.loads(hashRaw.replace('\\', ''))
