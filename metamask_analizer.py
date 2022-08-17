@@ -26,18 +26,19 @@ for (dirPath, dirNames, filenames) in walk('metamaskLogs'):
         addressArr = list(set(addressArr))
 
         hashStartPosition = content.find("KeyringController") + 29
-        hashEndPosition = content.find("MetaMetricsController", hashStartPosition) - 4
-        hashRaw = content[hashStartPosition:hashEndPosition]
-        hashObj = json.loads(hashRaw.replace('\\', ''))
-        if 'salt' not in hashObj or 'iv' not in hashObj or 'data' not in hashObj:
-            print("! Invalid hashObj format ...")
-            exit(1)
-        metamask = '$metamask$' + hashObj['salt'] + '$' + hashObj['iv'] + '$' + hashObj['data']
+        if cachePosition != -1:
+            hashEndPosition = content.find("MetaMetricsController", hashStartPosition) - 4
+            hashRaw = content[hashStartPosition:hashEndPosition]
+            hashObj = json.loads(hashRaw.replace('\\', ''))
+            if 'salt' not in hashObj or 'iv' not in hashObj or 'data' not in hashObj:
+                print("! Invalid hashObj format ...")
+                exit(1)
+            metamask = '$metamask$' + hashObj['salt'] + '$' + hashObj['iv'] + '$' + hashObj['data']
 
-        resultsArr[filename] = {
-            'addresses': addressArr,
-            'metamask': metamask
-        }
+            resultsArr[filename] = {
+                'addresses': addressArr,
+                'metamask': metamask
+            }
 
 prettyResult = json.dumps(resultsArr, indent=2)
 print(prettyResult)
