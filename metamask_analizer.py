@@ -18,7 +18,7 @@ for (dirPath, dirNames, filenames) in walk('metamaskLogs'):
             quotesPosition = content.find("}}", cachePosition)
             addressesJsonWrap = content[cachePosition:quotesPosition] + '}}'
 
-            for addressesWrap in json.loads(addressesJsonWrap).values():
+            for addressesWrap in json.loads(addressesJsonWrap, strict=False).values():
                 for address in addressesWrap:
                     addressArr.append(address)
             cachePosition += 1
